@@ -122,3 +122,34 @@ ggplot(data = locationData, aes(x = lon, y = lat)) +
   geom_point(aes(size = Count), color = "red", alpha = 0.5) + 
   scale_alpha(range = c(0.3, 0.7), guide = FALSE) +
   labs(title = "Address Frequency Heatmap", x = "Longitude", y = "Latitude")
+
+
+#slp 3, adding new code
+new_data <- data.frame(
+  lon = c(-72.7834, -73, -80),
+  lat = c(41.5348, 41.2, 41.2),
+  CityName = c("Middlesex, Middfield, CT", "Morningside, Milford, CT", "Irwin Township, Clinton Township, PA")
+)
+
+predictions <- predict(model, newdata = new_data)
+predictions
+rounded_predictions <- round(predictions, 2)
+
+# Combine predictions with new_data
+predictions_data <- data.frame(
+  CityName = new_data$CityName,
+  Predicted = round(predictions, 2)
+)
+
+# Print the predictions for new_data
+print(predictions_data)
+
+# Example visualization (e.g., bar chart for new predictions)
+ggplot(predictions_data, aes(x = CityName, y = Predicted, fill = CityName)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Predicted Counts for New Locations",
+       x = "City Name",
+       y = "Predicted Count") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+
